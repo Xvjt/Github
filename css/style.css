@@ -1,0 +1,581 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    background-image: url('../pic/微信图片_20251125193856_541_906 1.png'); /* 添加微信图片作为背景 */
+    background-size: cover; /* 背景图覆盖整个屏幕 */
+    background-position: center; /* 背景图居中 */
+    background-repeat: no-repeat; /* 不重复背景图 */
+    background-attachment: fixed; /* 背景图固定不滚动 */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    animation: pageFadeIn 1s ease-out;
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.main-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.core-area {
+    width: 100%;
+    height: calc(100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Back按钮放在底图容器内 */
+.back-btn {
+    position: absolute;
+    top: 40px; /* 增加距离底图顶部的空间 */
+    right: 40px; /* 增加距离底图右侧的空间 */
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-btn:hover {
+    transform: scale(1.2);
+    background-color: rgba(139, 69, 19, 0.2);
+    box-shadow: 0 0 20px rgba(139, 69, 19, 0.5);
+}
+
+.back-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.core-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent; /* 确保图片背景透明 */
+}
+
+.core-area img.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.core-area img.hidden {
+    opacity: 0;
+    transform: scale(1.05);
+}
+
+.text-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: none;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text-popup img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+.text-popup.hidden {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    pointer-events: none;
+}
+
+.text-popup.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+.tools-section {
+    width: 100%;
+    height: 20vh;
+    min-height: 180px;
+    max-height: 250px;
+    background-image: url('../pic/WuPingLan.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    position: absolute;
+    bottom: -20vh;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: toolsSlideUp 1.5s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes toolsSlideUp {
+    from { bottom: -20vh; opacity: 0; }
+    to { bottom: 40px; opacity: 1; }
+}
+
+/* 强制保证底部工具条可见 */
+.tools-section {
+    z-index: 1000 !important;
+    pointer-events: auto !important;
+}
+
+.tool-container {
+    width: calc(100% - 80px);
+    height: calc(100% - 50px);
+    min-height: 120px;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* 工具可视范围 - 使用百分比动态调整 */
+.tool-scroll {
+    position: absolute;
+    left: 5%; /* 使用百分比，随窗口大小变化 */
+    right: 5%; /* 使用百分比，随窗口大小变化 */
+    height: 100%; /* 修改为100%，与物品栏整体高度一致 */
+    margin: 0;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
+    touch-action: pan-x;
+    scroll-behavior: smooth;
+}
+
+/* 隐藏滚动条但保留滚动能力 */
+.tool-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.tool-scroll::-webkit-scrollbar {
+    height: 0; background: transparent; display: none;
+}
+
+/* 工具项基础样式 */
+.tool-item {
+    flex: 0 0 80px;
+    height: 100%; /* 确保工具项高度与容器一致 */
+    min-width: 60px;
+    max-width: 80px;
+    background-color: transparent;
+    margin: 0 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    transform-origin: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 工具项锁定/解锁状态 */
+.tool-item.tool-locked {
+    opacity: 0.5;
+}
+
+.tool-item.tool-unlocked {
+    opacity: 1;
+}
+
+/* 工具项动态透明度类 */
+.tool-item.tool-unlocked.tool-fade-100 {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.tool-item.tool-unlocked.tool-fade-80 {
+    opacity: 0.8;
+    transform: scale(0.95);
+}
+
+.tool-item.tool-unlocked.tool-fade-50 {
+    opacity: 0.5;
+    transform: scale(0.85);
+}
+
+.tool-item.tool-unlocked.tool-fade-0 {
+    opacity: 0;
+    transform: scale(0.75);
+}
+
+/* 解锁动画 */
+@keyframes toolUnlock {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.8) rotate(-10deg);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.tool-item:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 20px rgba(139, 69, 19, 0.3);
+}
+
+.tool-item.focused {
+    transform: scale(1.05);
+    background-color: transparent;
+    box-shadow: 0 0 15px rgba(139, 69, 19, 0.7);
+}
+
+.tool-item.unlocking {
+    animation: toolUnlock 1s ease-out forwards;
+}
+
+.arrow-btn {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    background-color: transparent;
+    border: none;
+    color: #8B4513;
+    font-weight: bold;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 999;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.arrow-btn:active {
+    animation: arrowClick 0.2s ease-out;
+}
+
+@keyframes arrowClick {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+}
+
+.left-arrow {
+    left: 0;
+    justify-content: flex-start;
+    padding-left: 10px;
+    width: 44px;
+}
+
+.right-arrow {
+    right: 0;
+    justify-content: flex-end;
+    padding-right: 10px;
+    width: 44px;
+}
+
+.arrow-btn:hover {
+    background-color: rgba(139, 69, 19, 0.2);
+    transform: scale(1.1);
+}
+
+.arrow-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.arrow-btn.inactive {
+    opacity: 0.3;
+    cursor: default;
+    transform: none;
+    transition: opacity 0.5s ease;
+}
+
+/* 轻微晃动动画反馈 */
+.left-arrow.nudge { animation: nudge-left 180ms ease; }
+.right-arrow.nudge { animation: nudge-right 180ms ease; }
+
+@keyframes nudge-left {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-6px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes nudge-right {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(6px); }
+    100% { transform: translateX(0); }
+}
+
+.status-info {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #8B4513;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 5;
+}
+
+.swipe-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #8B4513;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* 添加页面加载时的加载指示器 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: loadingFadeOut 1.5s ease-out forwards;
+    animation-delay: 1s;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #8B4513;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes loadingFadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; pointer-events: none; }
+}
+
+@media (max-width: 768px) {
+    .tool-item {
+        flex: 0 0 60px;
+        min-width: 40px;
+        max-width: 60px;
+    }
+    
+    .back-btn {
+        width: 40px;
+        height: 40px;
+        top: 30px; /* 移动端也增加距离 */
+        right: 30px; /* 移动端也增加距离 */
+    }
+    
+    .tools-section {
+        height: 15vh;
+        min-height: 120px;
+        max-height: 180px;
+        bottom: 20px;
+    }
+    
+    .tool-container {
+        width: calc(100% - 60px);
+        height: calc(100% - 40px);
+        min-height: 80px;
+        padding: 0;
+    }
+    
+    .arrow-btn {
+        width: 32px;
+        font-size: 20px;
+    }
+    
+    .left-arrow {
+        width: 32px;
+        padding-left: 5px;
+    }
+    .right-arrow {
+        width: 32px;
+        padding-right: 5px;
+    }
+    
+    .status-info {
+        font-size: 12px;
+    }
+    
+    .swipe-hint {
+        font-size: 10px;
+    }
+    
+    .tool-scroll {
+        left: 8%;
+        right: 8%;
+        height: calc(100% - 15px);
+    }
+}
+
+.tool-scroll.dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+.text-popup {
+    width: 90%;
+    max-width: 500px;
+}
+
+/* 中等屏幕适配 */
+@media (min-width: 992px) {
+    .tool-scroll {
+        left: 6%; /* 中等屏幕时增加可视范围 */
+        right: 6%; /* 中等屏幕时增加可视范围 */
+    }
+    
+    .tool-item {
+        flex: 0 0 90px; /* 中等屏幕时工具项稍大 */
+        min-width: 70px;
+        max-width: 90px;
+    }
+    
+    .tools-section {
+        min-height: 200px; /* 中等屏幕时工具栏更高 */
+        max-height: 280px;
+    }
+    
+    .tool-container {
+        min-height: 140px; /* 中等屏幕时容器更高 */
+    }
+    
+    .back-btn {
+        top: 50px; /* 中等屏幕时增加距离 */
+        right: 50px; /* 中等屏幕时增加距离 */
+    }
+}
+
+/* 大屏幕适配 */
+@media (min-width: 1200px) {
+    .tool-scroll {
+        left: 8%; /* 大屏幕时进一步增加可视范围 */
+        right: 8%; /* 大屏幕时进一步增加可视范围 */
+    }
+    
+    .tool-item {
+        flex: 0 0 110px; /* 大屏幕时工具项更大 */
+        min-width: 90px;
+        max-width: 110px;
+    }
+    
+    .tools-section {
+        min-height: 220px; /* 大屏幕时工具栏更高 */
+        max-height: 320px;
+    }
+    
+    .tool-container {
+        min-height: 160px; /* 大屏幕时容器更高 */
+    }
+    
+    .back-btn {
+        top: 60px; /* 大屏幕时增加距离 */
+        right: 60px; /* 大屏幕时增加距离 */
+    }
+}
+
+/* 超大屏幕适配 */
+@media (min-width: 1600px) {
+    .tool-scroll {
+        left: 10%; /* 超大屏幕时最大可视范围 */
+        right: 10%; /* 超大屏幕时最大可视范围 */
+    }
+    
+    .tool-item {
+        flex: 0 0 130px; /* 超大屏幕时工具项最大 */
+        min-width: 110px;
+        max-width: 130px;
+    }
+    
+    .tools-section {
+        min-height: 250px; /* 超大屏幕时工具栏最高 */
+        max-height: 350px;
+    }
+    
+    .tool-container {
+        min-height: 190px; /* 超大屏幕时容器最高 */
+    }
+    
+    .back-btn {
+        top: 70px; /* 超大屏幕时最大距离 */
+        right: 70px; /* 超大屏幕时最大距离 */
+    }
+}
+
+/* 添加背景图淡入动画 */
+@keyframes backgroundFadeIn {
+    from { 
+        opacity: 0;
+        filter: blur(5px);
+    }
+    to { 
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+body {
+    animation: pageFadeIn 1s ease-out, backgroundFadeIn 2s ease-out 0.5s both;
+}

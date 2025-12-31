@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>茶器具展示</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop>
+        <source src="慕溪月 - 高山流水 古琴曲.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="main-container">
+        <!-- Back按钮 -->
+        <button class="back-btn" id="backBtn">
+            <img src="pic/Back.png" alt="返回上一步">
+        </button>
+
+        <!-- 文字弹窗 -->
+        <div class="text-popup hidden" id="textPopup">
+            <img id="popupImage" src="" alt="文字说明">
+        </div>
+
+        <!-- 核心图片展示区 -->
+        <div class="core-area" id="coreArea">
+            <!-- 炙茶步骤 -->
+            <img src="pic/ZhiCha00.jpg" alt="炙茶场景" class="visible" data-step="ZhiCha" data-index="0">
+            <img src="pic/ZhiCha01.jpg" alt="炙茶场景" class="hidden" data-step="ZhiCha" data-index="1">
+            <img src="pic/ZhiCha02.jpg" alt="炙茶场景" class="hidden" data-step="ZhiCha" data-index="2">
+            
+            <!-- 碎茶步骤 -->
+            <img src="pic/SuiCha00.jpg" alt="碎茶场景" class="hidden" data-step="SuiCha" data-index="0">
+            <img src="pic/SuiCha01.jpg" alt="碎茶场景" class="hidden" data-step="SuiCha" data-index="1">
+            <img src="pic/SuiCha02.jpg" alt="碎茶场景" class="hidden" data-step="SuiCha" data-index="2">
+            
+            <!-- 碾茶步骤 -->
+            <img src="pic/NianCha00.jpg" alt="碾茶场景" class="hidden" data-step="NianCha" data-index="0">
+            <img src="pic/NianCha01.jpg" alt="碾茶场景" class="hidden" data-step="NianCha" data-index="1">
+            
+            <!-- 置盒步骤 -->
+            <img src="pic/ZhiHe00.jpg" alt="置盒场景" class="hidden" data-step="ZhiHe" data-index="0">
+            <img src="pic/ZhiHe01.jpg" alt="置盒场景" class="hidden" data-step="ZhiHe" data-index="1">
+            <img src="pic/ZhiHe02.jpg" alt="置盒场景" class="hidden" data-step="ZhiHe" data-index="2">
+            
+            <!-- 磨茶步骤 -->
+            <img src="pic/MoCha00.jpg" alt="磨茶场景" class="hidden" data-step="MoCha" data-index="0">
+            <img src="pic/MoCha01.jpg" alt="磨茶场景" class="hidden" data-step="MoCha" data-index="1">
+            
+            <!-- 烫盏步骤 -->
+            <img src="pic/TangZhan00.jpg" alt="烫盏场景" class="hidden" data-step="TangZhan" data-index="0">
+            <img src="pic/TangZhan01.jpg" alt="烫盏场景" class="hidden" data-step="TangZhan" data-index="1">
+            <img src="pic/TangZhan02.jpg" alt="烫盏场景" class="hidden" data-step="TangZhan" data-index="2">
+            
+            <!-- 取粉步骤 -->
+            <img src="pic/QuFen00.jpg" alt="取粉场景" class="hidden" data-step="QuFen" data-index="0">
+            <img src="pic/QuFen01.jpg" alt="取粉场景" class="hidden" data-step="QuFen" data-index="1">
+            <img src="pic/QuFen02.jpg" alt="取粉场景" class="hidden" data-step="QuFen" data-index="2">
+            
+            <!-- 注汤步骤 -->
+            <img src="pic/ZhuTang00.jpg" alt="注汤场景" class="hidden" data-step="ZhuTang" data-index="0">
+            <img src="pic/ZhuTang01.jpg" alt="注汤场景" class="hidden" data-step="ZhuTang" data-index="1">
+            
+            <!-- 击拂步骤 -->
+            <img src="pic/JiFu00.jpg" alt="击拂场景" class="hidden" data-step="JiFu" data-index="0">
+            <img src="pic/JiFu01.jpg" alt="击拂场景" class="hidden" data-step="JiFu" data-index="1">
+        </div>
+
+        <!-- 工具展示区域 -->
+        <div class="tools-section">
+            <!-- 工具展示栏 -->
+            <div class="tool-container" id="toolContainer">
+                <!-- 左箭头 -->
+                <button class="arrow-btn left-arrow" id="leftArrow" >
+                    &lt;
+                </button>
+
+                <!-- 工具滚动区域 - 减少到9个工具 -->
+                <div class="tool-scroll" id="toolScroll">
+                    <div class="tool-item focused" data-tool="1"></div>
+                    <div class="tool-item" data-tool="2"></div>
+                    <div class="tool-item" data-tool="3"></div>
+                    <div class="tool-item" data-tool="4"></div>
+                    <div class="tool-item" data-tool="5"></div>
+                    <div class="tool-item" data-tool="6"></div>
+                    <div class="tool-item" data-tool="7"></div>
+                    <div class="tool-item" data-tool="8"></div>
+                    <div class="tool-item" data-tool="9"></div>
+                </div>
+
+                <!-- 右箭头 -->
+                <button class="arrow-btn right-arrow" id="rightArrow">
+                    &gt;
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
