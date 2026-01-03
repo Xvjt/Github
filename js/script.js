@@ -66,10 +66,38 @@ function showTextPopup(step, index) {
     setTimeout(() => {
         textPopup.style.animation = '';
     }, 300);
+    
+    // 如果是击拂步骤的Text01，添加点击跳转功能
+    if (step === 'JiFu' && index === 1) {
+        // 移除之前的自动跳转逻辑
+        // 添加点击事件监听器
+        const clickHandler = function(event) {
+            // 阻止事件冒泡，避免触发coreArea的点击事件
+            event.stopPropagation();
+            // 立即跳转到完成页面
+            window.location.href = 'https://hayden0226.github.io/newtea/';
+        };
+        
+        // 为弹窗容器和图片都添加点击事件
+        textPopup.addEventListener('click', clickHandler);
+        popupImage.addEventListener('click', clickHandler);
+        
+        // 存储点击处理器以便后续移除
+        textPopup._jumpHandler = clickHandler;
+        popupImage._jumpHandler = clickHandler;
+    }
 }
 
 // 隐藏文字弹窗
 function hideTextPopup() {
+    // 如果是击拂步骤的Text01，移除点击事件
+    if (textPopup._jumpHandler) {
+        textPopup.removeEventListener('click', textPopup._jumpHandler);
+        popupImage.removeEventListener('click', popupImage._jumpHandler);
+        delete textPopup._jumpHandler;
+        delete popupImage._jumpHandler;
+    }
+    
     textPopup.classList.remove('visible');
     textPopup.classList.add('hidden');
     isPopupVisible = false;
@@ -572,4 +600,3 @@ style.textContent = `
         100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
     }
 `;
-document.head.appendChild(style);
